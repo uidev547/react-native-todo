@@ -7,12 +7,12 @@ export default class TodoList extends Component {
     list: []
   }
   render() {
-    const { list, onUpdateTodo } = this.props;
+    const { list, onTodoAction } = this.props;
     return (
       <View>
         {
           list.map((todo, index) => {
-            return <TodoItem todo={todo} key={index} index={index} onUpdateTodo={onUpdateTodo} />
+            return <TodoItem todo={todo} key={todo.id} index={index} onTodoAction={onTodoAction} />
           })
         }
       </View>

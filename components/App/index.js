@@ -10,6 +10,7 @@ import React, { Component } from 'react';
 import { Text, ScrollView, View, TouchableOpacity, TextInput } from 'react-native';
 import { styles } from './styles';
 import TodoList from '../TodoList/index';
+import ObjectID from 'bson-objectid';
 
 
 export default class App extends Component {
@@ -19,11 +20,22 @@ export default class App extends Component {
     list: [],
   }
   addTodo = (text) => {
+    const newTodo = {
+      text,
+      status: 'new',
+      id: ObjectID()
+    };
     this.setState({
-      list: [...this.state.list, { text, status: 'new' }]
+      list: [...this.state.list, newTodo ]
     })
   }
   handleAddNewTodo= () => {
+    if(this.state.text) {
+      this.addTodo(this.state.text);
+      this.setState({
+        text: ''
+      });
+    }
     this.input.focus();
   }
   
@@ -40,12 +52,33 @@ export default class App extends Component {
       text
     })
   }
-  handleUpdateTodo = (todo, index) => {
+  handleUpdateTodo = ({ todo, index }) => {
     const newList = [...this.state.list];
     newList[index] = todo;
     this.setState({
       list: newList
     });
+  }
+  handleDeleteTodo = ({ todo, index }) => {
+    const newList = [...this.state.list];
+    newList.splice(index, 1);
+    this.setState({
+      list: newList
+    });
+  }
+
+  handleTodoAction = (config) => {
+    const { type } = config;
+    switch(type) {
+      case 'update': {
+        this.handleUpdateTodo(config);
+        break;
+      }
+      case 'delete': {
+        this.handleDeleteTodo(config);
+        break;
+      }
+    }
   }
 
   render() {
@@ -55,18 +88,18 @@ export default class App extends Component {
           <Text style={styles.appTitle}>Todo List</Text>
         </View>
         <ScrollView style={styles.appContent} keyboardShouldPersistTaps="always">
-          <TodoList list={this.state.list} onUpdateTodo={this.handleUpdateTodo} />
+          <TodoList list={this.state.list} onTodoAction={this.handleTodoAction} />
           <TextInput
             onChangeText={this.handleChangeInput}
             multiline={true}
             style={styles.todoInput}
             value={this.state.text}
-            placeholder="Add new todo"
+            placeholder="Add new todo !!!!"
             ref={(input) => { this.input = input; }}
           />
         </ScrollView>
         <View style={styles.appFooter}>
-          <TouchableOpacity onPress={this.handleAddNewTodo}>
+          <TouchableOpacity style={styles.addTodoBtn} onPress={this.handleAddNewTodo}>
             <Text> Add New Todo </Text>
           </TouchableOpacity>
         </View>

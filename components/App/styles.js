@@ -22,6 +22,8 @@ export const styles = StyleSheet.create({
     appContent: {
         marginTop: 40,
         padding: 20,
+        paddingBottom: 0,
+        flex: 1,
         marginBottom: 40,
     },
     appFooter: {
@@ -32,14 +34,15 @@ export const styles = StyleSheet.create({
         borderTopColor: '#333',
         borderTopWidth: 1,
         height: 40,
+    },
+    addTodoBtn: {
+        flex: 1,
         justifyContent: 'center',
         alignItems: 'center'
     },
-    addBtn: {
-
-    },
     todoInput: {
-        padding: 10
+        padding: 10,
+        marginBottom: 20
     }
 });
   
