@@ -10,6 +10,7 @@
     "bson-objectid": "^1.2.4",
     "react": "16.6.0-alpha.8af6728",
     "react-native": "0.57.3",
+    "react-native-sortable-listview": "^0.2.8",
     "react-native-storage": "^0.2.3",
     "react-native-swipe-gestures": "^1.0.2",
     "react-native-swipeable": "^0.6.0"

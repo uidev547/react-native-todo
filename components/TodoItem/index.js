@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
-import { Text, View, TouchableOpacity, TextInput, CheckBox, TouchableHighlight } from 'react-native';
+import { Text, View, TextInput, CheckBox, TouchableHighlight, Dimensions } from 'react-native';
 import { styles } from './styles';
 import Swipeable from 'react-native-swipeable';
+import DoubleClick from '../../common/DoubleClick/index';
 
 
 export default class TodoItem extends Component {
@@ -63,32 +64,35 @@ export default class TodoItem extends Component {
   }
   rightButtons = [
     <View style={styles.todoSwipeOption}>
-      <TouchableHighlight onPress={this.handleDeleteTodo}>
-        <Text>Delete</Text>
-      </TouchableHighlight>
+      <Text style={styles.deleteInfoText}>Deleting this item</Text>
     </View>
   ]
   render() {
     const { todo, index } = this.props;
     const todoStyles = index === 0 ? [styles.todoItem, styles.todoItemFirstItem] : styles.todoItem;
+    const windowWidth = Dimensions.get('window').width;
+
     return (
       <Swipeable
         rightButtons={this.rightButtons}
         style={todoStyles}
+        rightButtonWidth={windowWidth}
+        rightActionActivationDistance={windowWidth*0.4}
+        onRightActionRelease={this.handleDeleteTodo}
       >
         <View style={styles.textWrapper}>
           {
             !this.state.isEditing ?
-            <TouchableOpacity
+            <DoubleClick
               style={styles.todoTextWrapper}
-              onPress={this.handleEdit}
+              onDoubleClick={this.handleEdit}
             >
               <Text
                 style={[styles.todoText, styles[`todoText${todo.status}`]]}
               >
                 {todo.text}
               </Text>
-            </TouchableOpacity> :
+            </DoubleClick> :
             <TextInput
               onChangeText={this.handleChangeInput}
               ref={(input) => { this.input = input; }}
